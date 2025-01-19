@@ -94,7 +94,7 @@ export async function refreshClasses(page: Page) {
   let classFound = false;
 
   // Used for testing
-  const eightClass = page.locator("td").getByText(/8:00/gi);
+  // const eightClass = page.locator("td").getByText(/8:00/gi);
 
   // Times we are interested in
   const nineClass = page.locator("td").getByText(/9:00/gi);
@@ -106,7 +106,7 @@ export async function refreshClasses(page: Page) {
 
   while (!classFound) {
     if (
-      (await eightClass.isVisible()) ||
+      // (await eightClass.isVisible()) ||
       (await nineClass.isVisible()) ||
       (await tenClass.isVisible()) ||
       (await elevenClass.isVisible()) ||

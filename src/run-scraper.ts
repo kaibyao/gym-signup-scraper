@@ -6,8 +6,15 @@ import { filterClasses, refreshClasses } from "./find-classes-page.ts";
 import { sendEmail } from "./email.ts";
 
 export async function runScraper(page: Page) {
-  const { loginUrl, loginEmail, loginPassword, classFinderButtonTitle } =
-    setup();
+  const {
+    loginUrl,
+    loginEmail,
+    loginPassword,
+    classFinderButtonTitle,
+    sendgridEmailFrom,
+    sendgridEmailRecipient,
+    sendgridEmailTemplateId,
+  } = setup();
 
   console.log("Navigating to login URL...");
   await page.goto(loginUrl);
@@ -21,5 +28,10 @@ export async function runScraper(page: Page) {
   const classOpenings = await refreshClasses(page);
   console.log("Class openings", classOpenings);
 
-  await sendEmail(classOpenings);
+  await sendEmail({
+    classOpenings,
+    sendgridEmailFrom,
+    sendgridEmailRecipient,
+    sendgridEmailTemplateId,
+  });
 }
