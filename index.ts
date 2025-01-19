@@ -4,7 +4,7 @@ import { runScraper } from "./src/run-scraper.ts";
 
 async function main() {
   const browser = await chromium.launch({
-    headless: false, // To see the browser in action
+    headless: true, // Set to false to see the browser in action
   });
   const context = await browser.newContext();
   const page = await context.newPage();
