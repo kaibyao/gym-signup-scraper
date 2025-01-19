@@ -93,6 +93,10 @@ export async function filterClasses(page: Page) {
 export async function refreshClasses(page: Page) {
   let classFound = false;
 
+  // Used for testing
+  const eightClass = page.locator("td").getByText(/8:00/gi);
+
+  // Times we are interested in
   const nineClass = page.locator("td").getByText(/9:00/gi);
   const tenClass = page.locator("td").getByText(/10:00/gi);
   const elevenClass = page.locator("td").getByText(/11:00/gi);
@@ -102,6 +106,7 @@ export async function refreshClasses(page: Page) {
 
   while (!classFound) {
     if (
+      (await eightClass.isVisible()) ||
       (await nineClass.isVisible()) ||
       (await tenClass.isVisible()) ||
       (await elevenClass.isVisible()) ||
@@ -129,6 +134,35 @@ export async function refreshClasses(page: Page) {
     }
   }
 
-  // TODO: send email
-  console.log("Class found");
+  return scrapeClassOpenings(page);
+}
+
+export interface ClassOpening {
+  title: string;
+  sessionName: string;
+  time: string;
+}
+
+async function scrapeClassOpenings(page: Page): Promise<ClassOpening[]> {
+  const classOpenings: ClassOpening[] = [];
+
+  const classRows = await page.locator(".btn-class-details").all();
+
+  for (const classRow of classRows) {
+    const title = await classRow.locator("td:nth-child(1)").innerText();
+    const sessionNameFullText = await classRow
+      .locator("td:nth-child(3)")
+      .innerText();
+    const sessionName = sessionNameFullText.split("\n")[0];
+    const timeFullText = await classRow.locator("td:nth-child(4)").innerText();
+    const time = timeFullText.split("\n")[0];
+
+    classOpenings.push({
+      title,
+      sessionName: sessionName ?? sessionNameFullText,
+      time: time ?? timeFullText,
+    });
+  }
+
+  return classOpenings;
 }

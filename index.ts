@@ -10,6 +10,8 @@ async function main() {
   const page = await context.newPage();
 
   await runScraper(page);
+
+  await browser.close();
 }
 
 // Run the script

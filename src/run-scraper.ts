@@ -3,6 +3,7 @@ import { setup } from "./setup.ts";
 import { login } from "./login.ts";
 import { navigateToFindClassesPage } from "./post-login-dashboard.ts";
 import { filterClasses, refreshClasses } from "./find-classes-page.ts";
+import { sendEmail } from "./email.ts";
 
 export async function runScraper(page: Page) {
   const { loginUrl, loginEmail, loginPassword, classFinderButtonTitle } =
@@ -17,5 +18,8 @@ export async function runScraper(page: Page) {
 
   await navigateToFindClassesPage(page, classFinderButtonTitle);
   await filterClasses(page);
-  await refreshClasses(page);
+  const classOpenings = await refreshClasses(page);
+  console.log("Class openings", classOpenings);
+
+  await sendEmail(classOpenings);
 }
