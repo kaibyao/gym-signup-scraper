@@ -116,6 +116,10 @@ export async function refreshClasses(page: Page) {
     ) {
       classFound = true;
     } else {
+      console.log(
+        'No classes found, refreshing list via toggling "All Ages" button.',
+      );
+
       const allAgesToggle = page
         .locator("#tab-panel-classes label")
         .filter({ hasText: "All Ages" });

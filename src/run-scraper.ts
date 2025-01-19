@@ -25,8 +25,9 @@ export async function runScraper(page: Page) {
 
   await navigateToFindClassesPage(page, classFinderButtonTitle);
   await filterClasses(page);
+
   const classOpenings = await refreshClasses(page);
-  console.log("Class openings", classOpenings);
+  console.log("Class openings found!", classOpenings);
 
   await sendEmail({
     classOpenings,
