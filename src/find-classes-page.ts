@@ -34,9 +34,9 @@ export async function filterClasses(page: Page) {
   await expect(closeDayOfWeekDropdownButton).toBeVisible();
   await closeDayOfWeekDropdownButton.click();
 
-  const applyButton = page.getByRole("button", { name: "ADD FILTER" });
-  await expect(applyButton).toBeVisible();
-  await applyButton.click();
+  const applyFilterButton = page.getByRole("button", { name: "ADD FILTER" });
+  await expect(applyFilterButton).toBeVisible();
+  await applyFilterButton.click();
 
   expect(
     page.getByRole("heading", { name: "Filter Results by Days" }),
@@ -58,11 +58,36 @@ export async function filterClasses(page: Page) {
 
   await page.waitForTimeout(250);
 
-  const applyGenderFilterButton = page.getByRole("button", {
-    name: "ADD FILTER",
+  await expect(applyFilterButton).toBeVisible();
+  await applyFilterButton.click();
+
+  // Filter by age
+
+  await expect(addFilterButton).toBeVisible();
+  await addFilterButton.click();
+
+  const ageFilterOption = page
+    .locator("#tab-panel-classes")
+    .getByText("AGE", { exact: true });
+  await expect(ageFilterOption).toBeVisible();
+  await ageFilterOption.click();
+
+  const ageMultiSelectDropdown = page.getByRole("button", {
+    name: "Select Age",
   });
-  await expect(applyGenderFilterButton).toBeVisible();
-  await applyGenderFilterButton.click();
+  await expect(ageMultiSelectDropdown).toBeVisible();
+  await ageMultiSelectDropdown.click();
+
+  const sixOption = page
+    .getByRole("listbox")
+    .getByRole("option", { name: "6", exact: true });
+  await expect(sixOption).toBeVisible();
+  await sixOption.click();
+
+  await expect(applyFilterButton).toBeVisible();
+  await applyFilterButton.click();
+
+  await page.waitForTimeout(250);
 }
 
 export async function refreshClasses(page: Page) {
@@ -104,5 +129,6 @@ export async function refreshClasses(page: Page) {
     }
   }
 
+  // TODO: send email
   console.log("Class found");
 }
