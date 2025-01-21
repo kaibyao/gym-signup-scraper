@@ -125,7 +125,7 @@ export async function refreshClasses(page: Page) {
         .filter({ hasText: "All Ages" });
 
       // refresh page every 30s via clicking "all ages" toggle x2
-      await page.waitForTimeout(10000);
+      await page.waitForTimeout(30000);
 
       await allAgesToggle.click();
 
