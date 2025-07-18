@@ -19,9 +19,12 @@ export async function runScraper(page: Page) {
   console.log("Navigating to login URL...");
   await page.goto(loginUrl);
 
-  console.log("Filling in login form...");
-  // TODO: maybe use ENV variables for selectors?
-  await login({ page, email: loginEmail, password: loginPassword });
+  const isLoginPage = await page.getByText("Forgot your password?").isVisible();
+  if (isLoginPage) {
+    console.log("Filling in login form...");
+    // TODO: maybe use ENV variables for selectors?
+    await login({ page, email: loginEmail, password: loginPassword });
+  }
 
   await navigateToFindClassesPage(page, classFinderButtonTitle);
   await filterClasses(page);
@@ -29,10 +32,10 @@ export async function runScraper(page: Page) {
   const classOpenings = await refreshClasses(page);
   console.log("Class openings found!", classOpenings);
 
-  await sendEmail({
-    classOpenings,
-    sendgridEmailFrom,
-    sendgridEmailRecipient,
-    sendgridEmailTemplateId,
-  });
+  // await sendEmail({
+  //   classOpenings,
+  //   sendgridEmailFrom,
+  //   sendgridEmailRecipient,
+  //   sendgridEmailTemplateId,
+  // });
 }

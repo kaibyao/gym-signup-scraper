@@ -87,6 +87,29 @@ export async function filterClasses(page: Page) {
   await expect(applyFilterButton).toBeVisible();
   await applyFilterButton.click();
 
+  // Filter by session
+  await expect(addFilterButton).toBeVisible();
+  await addFilterButton.click();
+
+  const sessionFilterOption = page
+    .locator("#tab-panel-classes")
+    .getByText("SESSION", { exact: true });
+  await expect(sessionFilterOption).toBeVisible();
+  await sessionFilterOption.click();
+
+  const sessionMultiSelectDropdown = page.getByRole("button", {
+    name: "Select Session",
+  });
+  await expect(sessionMultiSelectDropdown).toBeVisible();
+  await sessionMultiSelectDropdown.click();
+
+  const schoolYearOption = page.getByRole("listbox").getByRole("option", { name: "2025-2026 School Year", exact: true });
+  await expect(schoolYearOption).toBeVisible();
+  await schoolYearOption.click();
+
+  await expect(applyFilterButton).toBeVisible();
+  await applyFilterButton.click();
+
   await page.waitForTimeout(250);
 }
 
